@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:photo_snap/pages/home_page.dart';
 
 void main() {
+
   runApp(MyApp());
 }
 
@@ -22,6 +23,7 @@ SystemChrome.setSystemUIOverlayStyle(
 
 );
     return MaterialApp(
+
       debugShowCheckedModeBanner: false,
       title: 'PhotoSnap',
       theme:ThemeData.dark(),

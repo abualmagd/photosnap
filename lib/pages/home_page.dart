@@ -6,15 +6,35 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_snap/pages/text_layer.dart';
 
+List texts=[];
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+
+
+  remove(int index){
+    setState(() {
+      texts.removeAt(index);
+    });
+
+  }
+
+
+
+
+
+
+
+
+
+
   var _formKey = GlobalKey<FormState>();
  String _text;
- List _texts=[];
+
   File _image;
   final picker=ImagePicker();
 Future getImage()async{
@@ -58,8 +78,8 @@ Future getImage()async{
                       child:_image!=null?Image.file(_image):Image.asset('assets/images/holders.jpeg',fit: BoxFit.cover,),
                     ),
                   ),
-                  for(int i=0;i<_texts.length;i++)
-                   TextLayer(text:_texts[i],color: Colors.blue,),
+                  for(int i=0;i<texts.length;i++)
+                   TextLayer(index: i,delete:()=>remove(i),),
 
 
 
@@ -135,8 +155,8 @@ Future getImage()async{
                 if(_formKey.currentState.validate()){
                   _formKey.currentState.save();
                   Navigator.pop(context);
-                  _texts.add(_text);
-                  print(_texts[0]);
+                  texts.add(_text);
+                  print(texts[0]);
                 }
 
               }, child:Text('continue')),
