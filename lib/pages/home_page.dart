@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:photo_snap/pages/image_layer.dart';
 import 'package:photo_snap/pages/text_layer.dart';
-
+List layers=[];
 List texts=[];
 class MyHomePage extends StatefulWidget {
   @override
@@ -19,6 +20,13 @@ class _MyHomePageState extends State<MyHomePage> {
   remove(int index){
     setState(() {
       texts.removeAt(index);
+    });
+
+  }
+
+  removeImage(int index){
+    setState(() {
+      layers.removeAt(index);
     });
 
   }
@@ -48,9 +56,26 @@ Future getImage()async{
   }
 }
 
+Future getLayer()async{
+
+  final pikedFile=await picker.getImage(source:ImageSource.gallery);
+  if(pikedFile!=null){
+    setState(() {
+      layers.add(File(pikedFile.path));
+    });
+  }else{
+    print('something wrong');
+  }
+
+}
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       drawer: Drawer(),
       appBar: AppBar(
         elevation: 3,
@@ -73,14 +98,16 @@ Future getImage()async{
                   Padding(
                     padding: const EdgeInsets.only(top:18.0),
                     child: Container(
-                      height:MediaQuery.of(context).size.height*.60,
+                      height:MediaQuery.of(context).size.height*.70,
                       width: MediaQuery.of(context).size.width*.95,
-                      child:_image!=null?Image.file(_image):Image.asset('assets/images/holders.jpeg',fit: BoxFit.cover,),
+                      child:_image!=null?Image.file(_image):Image.asset('assets/images/holders.jpeg',fit: BoxFit.fill,),
                     ),
                   ),
                   for(int i=0;i<texts.length;i++)
                    TextLayer(index: i,delete:()=>remove(i),),
 
+                  for(int i=0;i<layers.length;i++)
+                    ImageLayer(index:i,delete:()=> remove(i),),
 
 
                 ],
@@ -95,8 +122,11 @@ Future getImage()async{
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(icon: Icon(Icons.photo), onPressed:(){
-                  getImage();
+                IconButton(icon:_image==null?Icon(Icons.photo):Icon(Icons.add), onPressed:(){
+                  if(_image==null) {
+                    getImage();
+                  }
+                  getLayer();
                 }),
                 IconButton(icon: Icon(Icons.filter), onPressed: (){}),
                 IconButton(icon: Icon(Icons.text_fields), onPressed: (){

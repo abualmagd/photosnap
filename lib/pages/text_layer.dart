@@ -63,12 +63,13 @@ Color textColor=Colors.blue;
         left: offset.dx,
         top: offset.dy,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GestureDetector(
               onPanUpdate: (details){
                 setState(() {
                   offset=Offset(offset.dx+details.delta.dx, offset.dy + details.delta.dy);
-                  _active=false;
+
                 });},
               onTap: (){
                 setState(() {
